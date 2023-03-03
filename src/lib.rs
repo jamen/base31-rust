@@ -40,7 +40,8 @@ pub fn encode(mut value: u64) -> String {
 }
 
 
-pub fn decode(s : String) -> u64 {
+pub fn decode<T: AsRef<str>>(s : T) -> u64 {
+	let s = s.as_ref();
 	let mut res : u64 = 0;
 	let mut char_rev_iterator = s.chars().rev();
 	for idx in 0..s.len() {
@@ -74,6 +75,7 @@ mod tests {
 	#[test]
 	fn test_decode() {
 		for (raw, encoded) in zip(RAW,ENCODED) {
+			assert_eq!(raw, decode(encoded));
 			assert_eq!(raw, decode(encoded.to_string()));
 			assert_eq!(raw, decode(encoded.to_string().to_lowercase()));
 		}
